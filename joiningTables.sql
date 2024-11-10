@@ -1,17 +1,11 @@
-/* 
--- CSCI 240 Databases and SQL
--- Homework SQL - Join
--- Name: CHRISTOPHER MILLER
--------------------------------------------------------
-*/
+-- Author: Christopher Miller
+-- Relational Database
+-- Using ExampleCollege Database
+-- Joining Tables
 
-
--- 1. Retrieve instructor and department information on 
---    instructors who are associated with a department.
--- Show only the instructor ID, instructor name (last and first),
+-- Select instructor and department information on instructors.
+-- Show the instructor ID, instructor name (last and first),
 -- department description, department office and phone #. 
--- Sort the result by department description, instructor last name and then first name. 
-
 SELECT      i.instructor_id,
             i.instructor_last_name, 
             i.instructor_first_name,
@@ -22,17 +16,17 @@ FROM        instructor i
 INNER JOIN  department d 
                 ON i.department_id 
                     = d.department_id
+-- Sort the result by department description, instructor last name
+--      and first name. 
 ORDER BY    d.department_desc, 
             i.instructor_last_name, 
             i.instructor_first_name;
+-----------------------------------------------------------------
 
-
--- 2. Retrieve instructor and department information 
---    on instructors who are in DRAMA or MUSIC department.
--- Show only the department description (not department ID), 
+-- Retrieve instructor and department information on instructors 
+--      who are in DRAMA or MUSIC department.
+-- Show the department description, 
 -- instructor ID and instructor name (last and first).
--- Sort the result by department description, instructor last name and then first name. 
-
 SELECT      d.department_desc,
             i.instructor_id,
             i.instructor_last_name,
@@ -44,17 +38,17 @@ INNER JOIN  department d
 WHERE       d.department_desc 
                 LIKE '%DRAMA%' 
                     OR '%MUSIC%'
+-- Sort the result by department description, instructor last 
+--      name and then first name. 
 ORDER BY    d.department_desc,
             i.instructor_last_name,
             i.instructor_first_name;
+-----------------------------------------------------------------
 
--- 3. Retrieve instructor and course information 
---    on instructors who are teaching MUSIC courses.
--- Show only the instructor ID, instructor name (last and first),
+-- Retrieve instructor and course informationo n instructors 
+--      teaching MUSIC courses.
+-- Display the instructor ID, instructor name as last/first,
 -- instructor phone#, course ID and course name. 
--- Sort the result by instructor last name and then first name.
--- [Hint: MUSIC courses are the courses that start with 'MUSIC' in course ID]
-
 SELECT      i.instructor_id,
             CONCAT(i.instructor_last_name, ', ', i.instructor_first_name) 
                 AS instructor_name,
@@ -67,14 +61,15 @@ INNER JOIN  course c
                     = c.instructor_id
 WHERE       c.course_id 
                 LIKE 'MUSIC%'
+-- Sort the result by instructor last name and then first name.
 ORDER BY    i.instructor_last_name, 
             i.instructor_first_name;
+-----------------------------------------------------------------
 
--- 4. Retrieve course and instructor information on 
---    courses that are taught by instructor Mark Robinson.
--- Show only the course ID, course name, credits and
--- instructor name (last and first).
-
+-- Retrieve course and instructor information on courses that are 
+--      taught by instructor Mark Robinson.
+-- Show the course ID, course name, credits and
+-- instructor name.
 SELECT      c.course_id,
             c.course_name,
             c.course_credits,
@@ -88,13 +83,12 @@ WHERE       i.instructor_first_name
                 = 'Mark' 
                     AND i.instructor_last_name 
                         = 'Robinson';
+-----------------------------------------------------------------
 
--- 5. Retrieve course and instructor information on 
---    the Lab type courses with 4 credits or more. 
--- Show only the course ID, course type, course name, credits
--- and instructor name (last and first). 
--- Sort the result by course ID. 
-
+-- Retrieve course and instructor information on the Lab type 
+--      courses with 4 credits or more. 
+-- Show the course ID, course type, course name, credits
+-- and instructor name. 
 SELECT      c.course_id,
             'Lab' 
                 AS course_type,
@@ -109,14 +103,14 @@ INNER JOIN  instructor i
 WHERE       c.course_type 
                 = 'Lab' 
                     AND c.course_credits >= 4
+-- Sort the result by course ID. 
 ORDER BY    c.course_id;
+-----------------------------------------------------------------
 
--- 6. Retrieve student and course information on
---    students who are enrolled (taking classes) in 17SP term. 
--- Show only the student ID, student name (last and first),
+-- Retrieve student and course information on students who are 
+--      enrolled in 17SP term. 
+-- Show the student ID, student name,
 -- course ID, course name and credits. 
--- Sort the result by student last name, first name and course ID. 
-
 SELECT      s.student_id,
             CONCAT(s.student_last_name, ', ', s.student_first_name) 
                 AS student_name,
@@ -132,16 +126,16 @@ INNER JOIN  course c
                     = c.course_id
 WHERE       e.term_id 
                 = '17SP'
+-- Sort the result by student last name, first name and course ID. 
 ORDER BY    s.student_last_name, 
             s.student_first_name, 
             e.course_id;
+-----------------------------------------------------------------
 
--- 7. Retrieve student and course information on
---    all enrollments for student Emily Waltham.
--- Show only the course ID, course name, credits, grade and 
--- student name (last and first). 
--- Sort the result by course ID. 
-
+-- Retrieve student and course information on all enrollments for
+--      student Emily Waltham.
+-- Display the course ID, course name, credits, grade and 
+--      student name (last and first). 
 SELECT      e.course_id,
             c.course_name,
             c.course_credits,
@@ -159,12 +153,13 @@ WHERE       s.student_last_name
                 = 'Waltham' 
                     AND s.student_first_name 
                         = 'Emily'
+-- Sort the result by course ID. 
 ORDER BY e.course_id;
+-----------------------------------------------------------------
 
--- 8. Retrieve distinct student information on
---    students who have received scholarships. 
--- Show only the student ID and name (last and first).
-
+-- Retrieve distinct student information on students who have 
+--      received scholarships. 
+-- Show only the student ID and name.
 SELECT      DISTINCT s.student_id,
             CONCAT(s.student_last_name, ', ', s.student_first_name) 
                 AS student_name
@@ -173,14 +168,12 @@ INNER JOIN  scholarship sc
                 ON s.student_id 
                     = sc.student_id
 ORDER BY    student_name;
+-----------------------------------------------------------------
 
--- 9. Retrieve student and scholarship information on
---    students who have received scholarships less than $500.
--- Show only the student ID, student name (last and first),
--- scholarship type description and scholarship amount.
--- Sort the result by student last name, first name (in ascending), 
--- and then scholarship amount in descending order.
-
+-- Retrieve student and scholarship information on students who 
+--      have received scholarships less than $500.
+-- Show only the student ID, student name, scholarship type 
+--      description and scholarship amount.
 SELECT      s.student_id,
             CONCAT(s.student_last_name, ', ', s.student_first_name) 
                 AS student_name,
@@ -194,21 +187,18 @@ INNER JOIN  scholarshiptype st
                 ON sc.scholarship_type_id 
                     = st.scholarship_type_id
 WHERE       sc.scholarship_amount < 500
+-- Sort the result by student last name, first name, 
+-- and scholarship amount in descending order.
 ORDER BY    s.student_last_name,
             s.student_first_name DESC, 
             sc.scholarship_amount DESC;
+-----------------------------------------------------------------
 
-
-
-
--- 10. Retrieve student and scholarship information on
---     students who have received Academic or Technology scholarships.
--- Show only the term description, student ID, 
--- student name (last and first), scholarship type description,
+-- Retrieve student and scholarship information on students who
+--      have received Academic or Technology scholarships.
+-- Display the term description, student ID, 
+-- student name, scholarship type description,
 -- and scholarship amount. 
--- Sort the result by term start date in descending order
--- and then student last name and first name (in ascending order).
-
 SELECT      e.term_id,
             s.student_id,
             CONCAT(s.student_last_name, ', ', s.student_first_name) AS student_name,
@@ -228,6 +218,8 @@ WHERE       st.scholarship_type_desc
 				= 'Academic' 
 					OR st.scholarship_type_desc 
 						= 'Technology'
+-- Sort the result by term start date in descending order
+-- and then student last name and first name.
 GROUP BY    e.term_id, 
             s.student_id, 
             student_name, 
@@ -236,3 +228,4 @@ GROUP BY    e.term_id,
 ORDER BY    e.term_id DESC,
             s.student_last_name, 
             s.student_first_name;
+-----------------------------------------------------------------

@@ -1,10 +1,10 @@
--- CSCI 240 Databases and SQL
--- Homework #5 - SQL - SELECT part 2
--- Run this SQL file to create and populate tables
--- Make sure you've selected a database to work with.
+-- Author: Christopher Miller
+-- Relational Database - Example College
+-- Create Database and Populate Tables
 
-CREATE DATABASE FriendsCollege05;
-USE FriendsCollege05;
+-- Example Database to communicate with
+CREATE DATABASE IF NOT EXISTS ExampleCollege;
+USE ExampleCollege;
 
 -- --------------------------------------
 -- ------ CREATE TABLES -----------------
@@ -21,8 +21,6 @@ term_active_flag boolean default 0,
 constraint pk_term primary key (term_id)
 );
 
-
-
 -- Create Table scholarshiptype
 create table if not exists scholarshiptype
 (
@@ -30,9 +28,6 @@ scholarship_type_id varchar(10) not null,
 scholarship_type_desc varchar(50),
 constraint pk_scholarshiptype primary key (scholarship_type_id)
 );
-
-
-
 
 -- Create Table department
 create table if not exists department
@@ -43,9 +38,6 @@ department_office varchar(20),
 department_phone varchar(20),
 constraint pk_department primary key (department_id)
 );
-
-
-
 
 -- create Table instructor
 create table if not exists instructor
@@ -60,9 +52,6 @@ constraint pk_instructor primary key (instructor_id),
 constraint fk_instructor_department_id foreign key (department_id) references department(department_id)
 );
 
-
-
-
 -- Create Table student
 create table if not exists student
 (
@@ -74,9 +63,6 @@ student_admit_date date,
 student_email varchar(50),
 constraint pk_student primary key (student_id)
 );
-
-
-
 
 -- Create Table course
 create table if not exists course
@@ -91,9 +77,6 @@ course_comment text,
 constraint pk_course primary key (course_id),
 constraint fk_class_instructor_id foreign key (instructor_id) references instructor (instructor_id)
 );
-
-
-
 
 -- create scholarship table
 create table if not exists scholarship
@@ -110,12 +93,7 @@ constraint fk_scholarship_student_id foreign key (student_id) references student
 constraint fk_scholarship_type_id foreign key (scholarship_type_id) references scholarshiptype(scholarship_type_id)
 );
 
-
-
-
-
 -- create enrollment table
-
 create table if not exists enrollment
 (
 enrollment_id int unsigned not null auto_increment,
@@ -129,11 +107,9 @@ constraint fk_enrollment_course_id foreign key (course_id) references course (co
 constraint fk_enrollment_student_id foreign key (student_id) references student (student_id)
 );
 
-/*
-
 -- --------------------------------------
--- ------ POPULATE TABLES ---------------
--- --------------------------------------
+-- ---------- POPULATE TABLES -----------
+-- ******* DATA USED IS NOT REAL ********
 
 -- populate term table
 insert into term
@@ -146,8 +122,6 @@ values
 ('17SP', '2017 Spring', '2017-01-17', '2017-05-11', 1),
 ('17SU', '2017 Summer', '2017-05-30', '2017-08-04', 0),
 ('17FA', '2017 Fall', '2017-08-28', '2017-12-11', 0);
-
-
 
 -- populate department table
 insert into department
@@ -163,7 +137,6 @@ values
 ('STAT', 'Dept. of Statistics', 'BSS 117', '406-756-3719'),
 ('BSCI', 'Dept. of Biosciences', 'RH 115', '406-756-2703');
 
-
 -- populate scholarshiptype table
 insert into scholarshiptype
 (scholarship_type_id, scholarship_type_desc)
@@ -177,27 +150,23 @@ values
 ('ATHL', 'Athletic Scholarship'),
 ('CORP', 'Corporate Scholarship');
 
-
 -- populate instructor table
 insert into instructor
 (instructor_id, instructor_last_name, instructor_first_name, instructor_office, instructor_phone, department_id)
 values
-('F001', 'Robinson', 'Mark', 'BSS 135', '406-756-5980',  'MKTG'),
+('F001', 'Robinson', 'Mark', 'BSS 135', '653-756-5980',  'MKTG'),
 ('F002', 'Becker', 'Pete', NULL, NULL, 'MKTG'),
-('F003', 'Leonard', 'Estelle', 'AT 206', '406-756-1333', 'DRAMA'),
-('F004', 'Hobart', 'Benjamin', 'RH 121', '406-756-3709',  'PALN'),
+('F003', 'Leonard', 'Estelle', 'AT 206', '546-756-1333', 'DRAMA'),
+('F004', 'Hobart', 'Benjamin', 'RH 121', '345-756-3709',  'PALN'),
 ('F005', 'Hannigan', 'Mike', 'AT 155', NULL, 'MUSIC'),
 ('F006', 'Stevens', 'Paul', NULL, NULL, 'CULA'),
-('F007', 'Wheeler', 'Charlie', 'RH 122', '406-756-4709', 'PALN'),
-('F008', 'Willick', 'Gunther', 'BC 130', '406-756-8935', 'FASH'),
-('F009', 'Jones', 'Tag', 'BC 130', '406-756-8930', 'FASH'),
-('F010', 'Hunter', 'Bobby', 'AT 205', '406-756-2540', 'DRAMA'),
-('F011', 'Heckles', 'Tim', 'AT 155', '406-756-5611', 'MUSIC'),
+('F007', 'Wheeler', 'Charlie', 'RH 122', '394-756-4709', 'PALN'),
+('F008', 'Willick', 'Gunther', 'BC 130', '344-756-8935', 'FASH'),
+('F009', 'Jones', 'Tag', 'BC 130', '983-756-8930', 'FASH'),
+('F010', 'Hunter', 'Bobby', 'AT 205', '234-756-2540', 'DRAMA'),
+('F011', 'Heckles', 'Tim', 'AT 155', '432-756-5611', 'MUSIC'),
 ('F012', 'Flay', 'Bobby', NULL, NULL, NULL),
 ('F013', 'Lauren', 'Ralph', NULL, NULL, NULL);
-
-
-
 
 -- populate student table
 insert into student
@@ -214,7 +183,6 @@ values
 ('A009', 'Waltham', 'Emily', '1986-07-03', '2015-10-13', 'emily@friends.edu'),
 ('A010', 'Buffay', 'Frank', NULL, '2017-01-09', NULL),
 ('A011', 'Stevens', 'Elizabeth', '1994-11-02', '2017-01-22', NULL);
-
 
 -- Populate course table
 insert into course
@@ -244,8 +212,6 @@ values
 ('MKTG_135', 'Lec', 'Marketing Strategy', 2, 15, 'F002', NULL),
 ('MKTG_165', 'Lec', 'Intro to Social Media Marketing', 3, 25, 'F001', NULL),
 ('MKTG_217', 'Lec', 'Digital Marketing', 3, 25, 'F002', NULL);
-
-
 
 -- populate enrollment table
 insert into enrollment
@@ -280,9 +246,9 @@ values
 ('16FA', 'MKTG_217', 'A009', 'A'),
 ('17SP', 'MKTG_165', 'A009', NULL);
 
-
-
 -- populate scholarship table
+-- database time references 24 hour time
+-- date YYYY-MM-DD
 insert into scholarship
 (term_id, student_id, scholarship_amount, scholarship_type_id, scholarship_approved_date)
 values
@@ -301,119 +267,3 @@ values
 ('16FA', 'A009', 650.00, 'ACAD', '2016-08-29 14:45:00'),
 ('17SP', 'A009', 581.00, 'ACAD', '2016-11-18 15:11:00'),
 ('17SP', 'A009', 375.80, 'TECH', '2017-01-23 08:38:00');
-
-*/
--- CSCI 240 Databases and SQL
--- Homework - SQL - Group By
-
-
--- Name: 
-----------------------------------------------------
--- Instructions:
--- 1) Run the homework sql setup file
---    The SQL file contains SQL statements to create and populate tables needed for this Homework
---    Make sure you select a database before running the homework file.
--- 2) Write SQL statements to the following questions. 
---    Run the SQL statements to make sure they are producing the correct result. 
--- 3) Submit your file as a .sql file. 
---    Please make sure the filename is in the following format:
---       GroupBy-p1-homework_lastname_firstname.txt
--------------------------------------------------------
-
-
--- 1. Write a query that counts the number of instructors in 
---    each department in the Instructor table.
--- Show only the department ID and the count. 
-
-SELECT  department_id
-        count(*)
-FROM    instructor;
-GROUP   BY department_id 
-
-
--- 2. Modify your query from Question #1 to count the number of 
--- instructors for MUSIC and MKTG departments.
--- Show only the department ID and the count.
-
-SELECT  count(department_id)
-FROM    instructor;
-WHERE   department_id LIKE '%Music%'
-OR      department_id LIKE '%MKTG%'
-GROUP   BY department_id 
-
-
--- 3. OPTIONAL Modify your query from Question #1 to retrieve only the 
--- department that has less than 2 instructors assigned. 
--- Show only the department ID and the count. 
-
-
-
-
--- 4. Write a query that counts the number of courses for each 
---    course type in the Course table.
--- Show only the course type and the count. 
-
-SELECT  course_type, 
-        COUNT(*) AS 'count'
-FROM    course
-GROUP   BY course_type;
-
-
-
--- 5. Write a query that counts the number of courses per
---    course credits in the Course table.
--- Show only the course credits and the count. 
-
-SELECT  DISTINCT course_credits,
-        COUNT(*) as 'count'
-FROM    course
-GROUP   BY course_credits
-
-
--- 6. Write a query that counts the number of courses assigned 
---    to each instructor in the Course table. 
---  Show only the instructor ID and the count.
-
-
- 
-
--- 7. Modify your query from Question #6 to retrieve only
---    the instructor IDs of F002, F008 and F011. 
--- Show only the instructor ID and the count. 
-
-
-
-
-
--- 8. OPTIONAL Modify your query from Question #6 to retrieve only
---    the instructors who are assigned 3 courses or more. 
--- Show only the instructor ID and the count. 
-
-
-
-
-
--- 9. Modify your query from Question #6 to retrieve 
---    instructor id, instructor name and the count.
--- Show only the instructor ID, name (last and first) and the count.
--- [HINT: You will need to join a table to get instructor name]
-
-
-
-
-
-
--- 10. Write a query that counts all enrollments per student
---     in the Enrollment table. 
---  Show only the student ID and the count.
-
-SELECT *,
-        COUNT(student_id) AS 'count'
-FROM    Enrollment
-GROUP   BY student_id 
-
-
-
-
-
-
